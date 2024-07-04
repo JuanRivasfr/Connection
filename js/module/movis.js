@@ -27,8 +27,41 @@ export class movis extends connect {
 
     async getAllMovisOfAction(){
         let res = await this.collection.find(
-            {genre: {$eq : "Accion"}},
-            {name: 1, genre: 1, _id: 0}
+            {genre: {$eq : "Accion"}}
+          ).toArray()
+        return res
+    }
+
+    async getAllMoviesWith200Copies(){
+        let res = await this.collection.find(
+            {$and:[
+              {"format.name": {$eq : "Bluray"}},
+              {"format.copies": {$gte : 200}}
+              ]}
+          ).toArray()
+        return res
+    }
+
+    async getAllMoviesThatDvdLessOf10(){
+        let res = await this.collection.find(
+            {$and:[
+              {"format.name": {$eq : "dvd"}},
+              {"format.copies": {$lt : 10}}
+              ]}
+          ).toArray()
+        return res
+    }
+
+    async getAllMoviesWithACharacterNamedCobb(){
+        let res = await this.collection.find(
+            {"character.apodo" : {$eq : "Cobb"}}
+          ).toArray()
+        return res
+    }
+
+    async getAllMoviesWithActorsWithId2And3(){
+        let res = await this.collection.find(
+            {"character.id_actor" : {$in: [2,3]}}
           ).toArray()
         return res
     }
